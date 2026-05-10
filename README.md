@@ -397,28 +397,6 @@ docker exec -it taskmanager_backend sh
 
 ---
 
-## 📸 Screenshots
-
-> _Add screenshots of your running app here._
-
-| Dashboard | Task Modal | Mobile View |
-|-----------|-----------|-------------|
-| ![Dashboard]() | ![Modal]() | ![Mobile]() |
-
----
-
-## 🛠️ Future Improvements
-
-- [ ] User authentication (JWT)
-- [ ] Pagination
-- [ ] Due dates & reminders
-- [ ] Task categories / tags
-- [x] CI/CD with GitHub Actions
-- [ ] HTTPS with Let's Encrypt / Certbot
-- [ ] Kubernetes deployment manifests
-
----
-
 ## 📄 License
 
 MIT — free to use for learning and personal projects.
