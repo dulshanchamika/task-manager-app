@@ -1,0 +1,42 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Task {
+  id          String   @id @default(uuid())
+  title       String
+  description String?
+  priority    Priority @default(MEDIUM)
+  status      Status   @default(PENDING)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("tasks")
+}
+
+model Profile {
+  id        String   @id @default(uuid())
+  name      String   @default("John Doe")
+  position  String   @default("Developer")
+  photo     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("profiles")
+}
+
+enum Priority {
+  LOW
+  MEDIUM
+  HIGH
+}
+
+enum Status {
+  PENDING
+  COMPLETED
+}
