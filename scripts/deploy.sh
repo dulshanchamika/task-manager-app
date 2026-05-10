@@ -13,7 +13,7 @@ echo "🚀 Starting deployment..."
 echo "🛠️ Rebuilding and restarting containers..."
 docker compose -f docker-compose.prod.yml up -d --build
 
-# 3. Clean up unused images to save disk space
+# 3. Clean up unused images to save disk space...
 echo "🧹 Cleaning up old images..."
 docker image prune -f
 
