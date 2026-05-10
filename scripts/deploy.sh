@@ -11,7 +11,7 @@ echo "🚀 Starting deployment..."
 
 # 2. Rebuild and restart containers
 echo "🛠️ Rebuilding and restarting containers..."
-docker-compose -f docker-compose.prod.yml up -d --build
+docker compose -f docker-compose.prod.yml up -d --build
 
 # 3. Clean up unused images to save disk space
 echo "🧹 Cleaning up old images..."
