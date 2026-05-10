@@ -58,6 +58,8 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             cd ~/task-manager-app
-            git pull origin main
+            git fetch origin main
+            git reset --hard origin/main
+            git clean -fd
             chmod +x scripts/deploy.sh
             ./scripts/deploy.sh
