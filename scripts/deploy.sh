@@ -17,4 +17,4 @@ docker-compose -f docker-compose.prod.yml up -d --build
 echo "🧹 Cleaning up old images..."
 docker image prune -f
 
-echo "✅ Deployment complete! App is running at http://localhost:3030"
+echo "✅ Deployment complete! App is running at http://localhost"

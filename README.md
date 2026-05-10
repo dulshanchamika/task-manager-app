@@ -165,6 +165,22 @@ npm test
 
 ---
 
+## ♾️ CI/CD Pipeline
+
+The project uses **GitHub Actions** for continuous integration and deployment. The workflow is defined in `.github/workflows/main.yml`.
+
+### Workflow Steps:
+1. **Test Backend**: Runs Jest tests and Prisma validation.
+2. **Test Frontend**: Runs Vitest component tests.
+3. **Deploy**: If tests pass and the branch is `main`, it automatically SSHs into the EC2 instance and runs the deployment script.
+
+### Required GitHub Secrets:
+To enable automated deployment, add these secrets to your GitHub repository:
+- `EC2_HOST`: The public IP or DNS of your EC2 instance.
+- `SSH_PRIVATE_KEY`: Your private key (`.pem` file content) used to connect to the instance.
+
+---
+
 ## 🐳 Docker Setup (Recommended)
 
 ### Run the entire stack with one command
@@ -184,11 +200,11 @@ docker compose up --build
 docker exec taskmanager_backend node prisma/seed.js
 ```
 
-### Service URLs (Docker)
+### Service URLs (Local Docker)
 
 | Service  | URL                          |
 |----------|------------------------------|
-| App      | http://localhost             |
+| App      | http://localhost:3030        |
 | Backend  | http://localhost:5000        |
 | Database | localhost:5432               |
 
@@ -292,32 +308,35 @@ docker compose version
 
 ---
 
-### Step 4 — Clone & Deploy
+### Step 4 — Clone & Set Up
 
 ```bash
 # Clone the repository
 git clone https://github.com/your-username/task-manager-app.git
 cd task-manager-app
 
-# (Optional) Update credentials in .env
+# Create production environment file
+cp .env.prod.example .env
+# Edit .env with your secure credentials
 nano .env
+```
 
-# Build and start all containers
-docker compose up --build -d
+### Step 5 — Deploy
+
+You can deploy manually using Docker Compose:
+
+```bash
+# Build and start all containers using production config
+docker compose -f docker-compose.prod.yml up --build -d
 
 # Check running containers
 docker ps
 
-# View logs
-docker compose logs -f
-
 # Seed sample data (optional)
-docker exec taskmanager_backend node prisma/seed.js
+docker exec taskmanager_backend_prod node prisma/seed.js
 ```
 
----
-
-### Step 5 — Access the Application
+### Step 6 — Access the Application
 
 Open your browser and navigate to:
 
@@ -325,7 +344,7 @@ Open your browser and navigate to:
 http://<YOUR_EC2_PUBLIC_IP>
 ```
 
-🎉 Your Task Manager app is now live on AWS!
+🎉 Your Task Manager app is now live on AWS (running on port 80)!
 
 ### Step 6 — Using the Deployment Script (Recommended)
 
@@ -354,26 +373,29 @@ To simplify future updates, I've included a `scripts/deploy.sh` script.
 
 ```bash
 # Stop all containers
-docker compose down
+docker compose -f docker-compose.prod.yml down
 
 # Restart containers
-docker compose restart
+docker compose -f docker-compose.prod.yml restart
 
 # View backend logs
-docker logs taskmanager_backend -f
+docker logs taskmanager_backend_prod -f
 
 # Run Prisma migrations manually
-docker exec taskmanager_backend npx prisma migrate deploy
+docker exec taskmanager_backend_prod npx prisma migrate deploy
 
 # Shell into backend container
-docker exec -it taskmanager_backend sh
+docker exec -it taskmanager_backend_prod sh
 ```
 
 ---
 
 ## 🔐 Environment Variables
 
-### Root `.env` (Docker Compose defaults)
+The project uses different environment files for different scenarios.
+
+### Root `.env` (Production / Docker Compose)
+Copy `.env.prod.example` to `.env` on your server.
 
 | Variable           | Default        | Description              |
 |--------------------|----------------|--------------------------|
